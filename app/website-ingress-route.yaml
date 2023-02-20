@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: http-redirect-ingressroute
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`localhost`) && PathPrefix(`/app`)
+      kind: Rule
+      services:
+        - name: website-service
+          port: 80
+      middlewares:
+        - name: app-stripprefix
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: app-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /app
