@@ -89,3 +89,10 @@ spec:
     prefixes:
       - /admin
 ```
+
+Once I created this, what I did was deploy directly from this repo, ie not using argcd, then when it is working I can deploy to argocd
+
+## Deploy directyly to kubenretes
+from the repo root
+
+kubecl apply -f app
