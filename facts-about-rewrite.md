@@ -1,10 +1,10 @@
 
 
-In the last we could dp some thing like this in `apiVersion: extensions/v1beta1` for rewrite, but this is not avaialbe in traefix 2.x!
+In the last version of Traefik ie v1 we could do something like this in `apiVersion: extensions/v1beta1` for rewrite and use an annotation to set our requirement `traefik.ingress.kubernetes.io/rewrite-target: /app/`, but this is not avaialbe in traefix 2.x!
 
+Traefk v1 annotation example ...
 
-
-```s
+```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -23,10 +23,10 @@ spec:
 
 ```
 
-I treid this ..
+I tried this with Traefk 2,x installed
 
 
-```s
+```Yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -49,17 +49,17 @@ spec:
               number: 80
 ```
 
-This is not suported!
+But This is not suported!
 
-With the new core notions of v2 (introduced earlier in the section "Frontends and Backends Are Dead... Long Live Routers, Middlewares, and Services"), transforming the URL path prefix of incoming requests is configured with middlewares, after the routing step with router rule PathPrefix.
+With the new core notions of v2 (introduced of "Frontends and Backends Are Dead... Long Live Routers, Middlewares, and Services"), transforming the URL path prefix of incoming requests is configured with middlewares, after the routing step with router rule PathPrefix.
 
 Use Case: Incoming requests to http://example.org/admin are forwarded to the webapplication "admin", with the path /admin stripped, e.g. to http://<IP>:<port>/. In this case, you must:
 
-First, configure a router named admin with a rule matching at least the path prefix with the PathPrefix keyword,
+First, configure a `router` named admin with a rule matching at least the path prefix with the PathPrefix keyword,
 
-Then, define a middleware of type stripprefix, which removes the prefix /admin, associated to the router admin.
+Then, define a `middleware` of type stripprefix, which removes the prefix /admin, associated to the router admin.
 
-Example ... this is just a sample of how I learned how to create the correct ingress route + middleware
+Example ... this is just a sample of how I learned how to create the correct ingress `route` + `middleware`
 
 ```yaml
 ---
@@ -90,9 +90,11 @@ spec:
       - /admin
 ```
 
-Once I created this, what I did was deploy directly from this repo, ie not using argcd, then when it is working I can deploy to argocd
+Once I created this, what I did was deploy directly from this repo, ie not using argcd, then when it is working I was able to deploy to argocd by using gitops as inteneded.
 
-## Deploy directyly to kubenretes
-from the repo root
+## To Deploy directly 
+To test/verify and deploy directly to kubenretes from the repo root use this command (ie non argo gitops)
 
+```s
 kubecl apply -f app
+```
